@@ -40,7 +40,7 @@ ${PROPOSAL.AI_CLIENT_CONTEXT}`;
 
 const WELCOME_MESSAGE: Message = {
   role: "assistant",
-  content: "Hola, soy el asesor de Ferova Agency. Estoy aquí para resolver cualquier duda sobre esta propuesta — los planes, los tiempos, cómo funciona el servicio o lo que necesites. ¿En qué te puedo ayudar?",
+  content: "Hola 👋 Soy Fera, la asesora de Ferova Agency. Estoy aquí para resolver cualquier duda sobre esta propuesta. ¿Por dónde empezamos?",
 };
 
 export function useAIChat() {
