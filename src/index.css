@@ -69,6 +69,13 @@
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+  font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
 }
 
 /* Scrollbar for chat */
