@@ -1,4 +1,3 @@
-import NavBar from "@/components/layout/NavBar";
 import HeroSection from "@/components/proposal/HeroSection";
 import DiagnosisSection from "@/components/proposal/DiagnosisSection";
 import OpportunitySection from "@/components/proposal/OpportunitySection";
@@ -12,7 +11,6 @@ import AIChatWidget from "@/components/widgets/AIChatWidget";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <NavBar />
       <HeroSection />
       <DiagnosisSection />
       <OpportunitySection />
