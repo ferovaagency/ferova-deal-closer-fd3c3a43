@@ -1,12 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import NavBar from "@/components/layout/NavBar";
+import HeroSection from "@/components/proposal/HeroSection";
+import DiagnosisSection from "@/components/proposal/DiagnosisSection";
+import OpportunitySection from "@/components/proposal/OpportunitySection";
+import StrategySection from "@/components/proposal/StrategySection";
+import PlansSection from "@/components/proposal/PlansSection";
+import ClosingSection from "@/components/proposal/ClosingSection";
+import TermsSection from "@/components/proposal/TermsSection";
+import StickyApproveBar from "@/components/widgets/StickyApproveBar";
+import AIChatWidget from "@/components/widgets/AIChatWidget";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <NavBar />
+      <HeroSection />
+      <DiagnosisSection />
+      <OpportunitySection />
+      <StrategySection />
+      <PlansSection />
+      <ClosingSection />
+      <TermsSection />
+      {/* Spacer for sticky bar */}
+      <div className="h-16" />
+      <StickyApproveBar />
+      <AIChatWidget />
     </div>
   );
 };
