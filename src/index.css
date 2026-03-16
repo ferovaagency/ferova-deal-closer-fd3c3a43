@@ -56,9 +56,16 @@
   }
 
   body {
-    font-family: 'Outfit', sans-serif;
-    @apply bg-background text-foreground;
-  }
+  font-family: 'Outfit', sans-serif;
+  @apply bg-background text-foreground;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+p, li, span {
+  font-size: 1rem;
+  line-height: 1.75;
+}
 
   h1, h2 {
     font-family: 'Cormorant Garamond', serif;
@@ -103,4 +110,14 @@ html {
 }
 .animate-urgent-pulse {
   animation: urgent-pulse 1s ease-in-out infinite;
+}
+
+/* Números sección oportunidad */
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 1;
+  color: hsl(var(--gold));
+  letter-spacing: -0.02em;
 }
