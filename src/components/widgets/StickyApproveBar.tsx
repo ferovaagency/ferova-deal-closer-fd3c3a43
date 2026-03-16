@@ -1,10 +1,11 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 import { buildWhatsAppURL } from "@/lib/whatsapp";
 import CountdownTimer from "./CountdownTimer";
 
 const StickyApproveBar = () => {
-  const message = `Hola ${PROPOSAL.AGENT_NAME}, apruebo la propuesta de Ferova Agency para ${PROPOSAL.CLIENT_COMPANY}. ¡Iniciemos!`;
-  const whatsappUrl = buildWhatsAppURL(message, PROPOSAL.WHATSAPP_NUMBER);
+  const proposal = useProposalContext();
+  const message = `Hola ${proposal.agent_name}, apruebo la propuesta de Ferova Agency para ${proposal.client_company}. ¡Iniciemos!`;
+  const whatsappUrl = buildWhatsAppURL(message, proposal.whatsapp_number);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-navy border-t border-gold/20">
@@ -13,7 +14,7 @@ const StickyApproveBar = () => {
           <CountdownTimer compact />
         </div>
         <p className="hidden md:block text-cream/80 font-body text-sm">
-          ¿Listo para iniciar, {PROPOSAL.CLIENT_NAME}?
+          ¿Listo para iniciar, {proposal.client_name}?
         </p>
         <a
           href={whatsappUrl}

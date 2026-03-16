@@ -1,11 +1,12 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 import { buildWhatsAppURL } from "@/lib/whatsapp";
 import { Check, Minus } from "lucide-react";
 
 const PlansSection = () => {
+  const proposal = useProposalContext();
+
   return (
     <section id="planes">
-      {/* Header */}
       <div className="bg-charcoal py-14 px-4">
         <h2 className="font-display text-cream text-3xl md:text-5xl text-center">
           Planes diseñados para ti
@@ -14,11 +15,10 @@ const PlansSection = () => {
 
       <div className="bg-cream py-20 md:py-28 px-4">
         <div className="container mx-auto max-w-5xl">
-          {/* Plans grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-12">
-            {PROPOSAL.PLANS.map((plan, i) => {
-              const msg = `Hola ${PROPOSAL.AGENT_NAME}, apruebo el ${plan.name} de Ferova Agency para ${PROPOSAL.CLIENT_COMPANY}. ¡Iniciemos!`;
-              const url = buildWhatsAppURL(msg, PROPOSAL.WHATSAPP_NUMBER);
+            {proposal.plans.map((plan, i) => {
+              const msg = `Hola ${proposal.agent_name}, apruebo el ${plan.name} de Ferova Agency para ${proposal.client_company}. ¡Iniciemos!`;
+              const url = buildWhatsAppURL(msg, proposal.whatsapp_number);
 
               return (
                 <div
@@ -87,10 +87,9 @@ const PlansSection = () => {
             })}
           </div>
 
-          {/* Recommendation */}
           <div className="bg-navy/10 border-l-4 border-l-navy rounded-md p-6">
             <p className="font-body text-sm text-navy leading-relaxed">
-              {PROPOSAL.RECOMMENDATION_TEXT}
+              {proposal.recommendation_text}
             </p>
           </div>
         </div>

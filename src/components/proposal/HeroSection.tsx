@@ -1,6 +1,8 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 
 const HeroSection = () => {
+  const proposal = useProposalContext();
+
   return (
     <section className="min-h-screen bg-navy flex flex-col py-0 px-0">
       {/* Top bar */}
@@ -27,25 +29,25 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/10 mb-10 animate-soft-pulse">
             <span className="w-2 h-2 rounded-full bg-gold" />
             <span className="text-gold font-body text-sm">
-              Cupo disponible · Inicio: {PROPOSAL.START_DATE}
+              Cupo disponible · Inicio: {proposal.start_date}
             </span>
           </div>
 
           <h1 className="font-display text-cream text-[40px] md:text-[64px] leading-tight mb-6">
             Propuesta digital para
             <br />
-            <span className="text-gold">{PROPOSAL.CLIENT_COMPANY}</span>
+            <span className="text-gold">{proposal.client_company}</span>
           </h1>
 
           <p className="font-body text-cream/80 text-lg md:text-xl mb-8">
-            Preparada exclusivamente para {PROPOSAL.CLIENT_NAME}
+            Preparada exclusivamente para {proposal.client_name}
           </p>
 
           <div className="w-16 h-0.5 bg-gold mx-auto mb-8" />
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-cream/60 font-body text-sm">
-            <span>Cliente: {PROPOSAL.CLIENT_NAME}</span>
-            <span>Válida hasta: {PROPOSAL.EXPIRY_DATE}</span>
+            <span>Cliente: {proposal.client_name}</span>
+            <span>Válida hasta: {proposal.expiry_date}</span>
           </div>
         </div>
       </div>

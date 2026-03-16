@@ -1,4 +1,4 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 import { AlertTriangle } from "lucide-react";
 
 const borderColors = [
@@ -9,6 +9,8 @@ const borderColors = [
 ];
 
 const DiagnosisSection = () => {
+  const proposal = useProposalContext();
+
   return (
     <section id="diagnostico" className="bg-cream py-20 md:py-28 px-4">
       <div className="container mx-auto max-w-4xl">
@@ -16,9 +18,8 @@ const DiagnosisSection = () => {
           Lo que encontramos
         </h2>
 
-        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {PROPOSAL.DIAGNOSIS.map((item, i) => (
+          {proposal.diagnosis.map((item, i) => (
             <div
               key={i}
               className={`bg-card rounded-md shadow-card p-6 border-l-4 ${borderColors[i]} hover:shadow-card-hover transition-all duration-300`}
@@ -33,11 +34,10 @@ const DiagnosisSection = () => {
           ))}
         </div>
 
-        {/* Alert */}
         <div className="bg-wine/10 border-l-4 border-l-wine rounded-md p-5 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-wine flex-shrink-0 mt-0.5" />
           <p className="font-body text-sm text-wine">
-            {PROPOSAL.URGENCY_TEXT}
+            {proposal.urgency_text}
           </p>
         </div>
       </div>
