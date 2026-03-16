@@ -13,10 +13,12 @@ const OpportunitySection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
           {proposal.stats.map((stat, i) => (
             <div key={i} className="text-center">
-              <p className="font-display text-gold text-6xl md:text-7xl leading-none mb-3">
+              <p className="stat-number text-gold mb-3">
                 {stat.number}
               </p>
-              <p className="font-body text-charcoal text-sm">{stat.label}</p>
+              <p className="font-body text-charcoal text-base leading-relaxed">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
