@@ -1,1 +1,4 @@
 project_id = "evevdlqezaielsyzkzit"
+
+[functions.fera-chat]
+verify_jwt = false
