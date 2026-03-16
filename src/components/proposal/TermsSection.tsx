@@ -1,6 +1,8 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 
 const TermsSection = () => {
+  const proposal = useProposalContext();
+
   return (
     <section className="bg-card py-12 px-4">
       <div className="container mx-auto max-w-2xl text-center">
@@ -8,7 +10,7 @@ const TermsSection = () => {
           Al aprobar esta propuesta aceptas los términos y condiciones de Ferova Agency.
         </p>
         <a
-          href={PROPOSAL.TERMS_URL}
+          href={proposal.terms_url}
           target="_blank"
           rel="noopener noreferrer"
           className="font-body text-gold text-sm underline hover:text-gold/80 transition-colors duration-300"

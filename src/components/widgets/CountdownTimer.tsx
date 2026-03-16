@@ -1,12 +1,13 @@
 import { useCountdown } from "@/hooks/useCountdown";
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 
 interface CountdownTimerProps {
   compact?: boolean;
 }
 
 const CountdownTimer = ({ compact = false }: CountdownTimerProps) => {
-  const { days, hours, minutes, seconds, isExpired, isUrgent } = useCountdown(PROPOSAL.DEADLINE_ISO);
+  const proposal = useProposalContext();
+  const { days, hours, minutes, seconds, isExpired, isUrgent } = useCountdown(proposal.deadline_iso);
 
   if (isExpired) {
     return (

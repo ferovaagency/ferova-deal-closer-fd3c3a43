@@ -1,12 +1,22 @@
 import { useState, useCallback } from "react";
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
-const SYSTEM_PROMPT = `Eres el asesor digital de Ferova Agency. Tu nombre es Fera. Ayudas a prospectos que están leyendo una propuesta comercial a entender el servicio, resolver dudas y tomar una decisión informada.
+const WELCOME_MESSAGE: Message = {
+  role: "assistant",
+  content: "Hola 👋 Soy Fera, la asesora de Ferova Agency. Estoy aquí para resolver cualquier duda sobre esta propuesta. ¿Por dónde empezamos?",
+};
+
+export function useAIChat() {
+  const proposal = useProposalContext();
+  const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const SYSTEM_PROMPT = `Eres el asesor digital de Ferova Agency. Tu nombre es Fera. Ayudas a prospectos que están leyendo una propuesta comercial a entender el servicio, resolver dudas y tomar una decisión informada.
 
 SOBRE FEROVA AGENCY:
 Ferova Agency es una agencia de marketing digital colombiana especializada en estrategia digital, pauta en redes sociales, creación de contenido y posicionamiento de marca. Nuestra metodología se basa en tres pilares: diagnóstico real del negocio antes de proponer, campañas segmentadas con objetivos claros por plataforma, y acompañamiento cercano al equipo comercial del cliente para que los contactos generados se conviertan en ventas.
@@ -30,22 +40,13 @@ Precios fijos durante el período mínimo. La inversión en publicidad es adicio
 REGLAS INQUEBRANTABLES:
 1. Nunca prometas resultados específicos no incluidos en la propuesta
 2. Nunca inventes precios o características
-3. Si no sabes algo, di que lo resuelve Mafe por WhatsApp
+3. Si no sabes algo, di que lo resuelve ${proposal.agent_name} por WhatsApp
 4. Responde siempre en español, claro y sin jerga técnica
 5. Sé amable pero no exagerado. Sin "¡Excelente pregunta!"
 6. Nunca información falsa para cerrar una venta
 
 CONTEXTO DE ESTE CLIENTE:
-${PROPOSAL.AI_CLIENT_CONTEXT}`;
-
-const WELCOME_MESSAGE: Message = {
-  role: "assistant",
-  content: "Hola 👋 Soy Fera, la asesora de Ferova Agency. Estoy aquí para resolver cualquier duda sobre esta propuesta. ¿Por dónde empezamos?",
-};
-
-export function useAIChat() {
-  const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
-  const [isLoading, setIsLoading] = useState(false);
+${proposal.ai_client_context}`;
 
   const sendMessage = useCallback(async (userMessage: string) => {
     const userMsg: Message = { role: "user", content: userMessage };
@@ -71,17 +72,17 @@ export function useAIChat() {
       });
 
       const data = await response.json();
-      const assistantContent = data.content?.[0]?.text || "Lo siento, hubo un error. Por favor contacta a Mafe por WhatsApp.";
+      const assistantContent = data.content?.[0]?.text || `Lo siento, hubo un error. Por favor contacta a ${proposal.agent_name} por WhatsApp.`;
       setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Lo siento, no pude conectarme. Por favor contacta a Mafe directamente por WhatsApp." },
+        { role: "assistant", content: `Lo siento, no pude conectarme. Por favor contacta a ${proposal.agent_name} directamente por WhatsApp.` },
       ]);
     } finally {
       setIsLoading(false);
     }
-  }, [messages]);
+  }, [messages, SYSTEM_PROMPT, proposal.agent_name]);
 
   return { messages, isLoading, sendMessage };
 }

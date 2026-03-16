@@ -1,26 +1,26 @@
-import { PROPOSAL } from "@/config/proposal";
+import { useProposalContext } from "@/contexts/ProposalContext";
 import { buildWhatsAppURL } from "@/lib/whatsapp";
 import CountdownTimer from "@/components/widgets/CountdownTimer";
 
 const ClosingSection = () => {
-  const msg = `Hola ${PROPOSAL.AGENT_NAME}, acabo de revisar la propuesta de Ferova Agency para ${PROPOSAL.CLIENT_COMPANY} y la apruebo. ¡Podemos iniciar!`;
-  const url = buildWhatsAppURL(msg, PROPOSAL.WHATSAPP_NUMBER);
+  const proposal = useProposalContext();
+  const msg = `Hola ${proposal.agent_name}, acabo de revisar la propuesta de Ferova Agency para ${proposal.client_company} y la apruebo. ¡Podemos iniciar!`;
+  const url = buildWhatsAppURL(msg, proposal.whatsapp_number);
 
   return (
     <section id="aprobar" className="bg-wine py-20 md:py-28 px-4">
       <div className="container mx-auto max-w-3xl text-center">
         <h2 className="font-display text-cream text-4xl md:text-[56px] leading-tight mb-6">
-          {PROPOSAL.CLOSING_HEADLINE}
+          {proposal.closing_headline}
         </h2>
 
         <p className="font-body text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto">
-          {PROPOSAL.CLOSING_BODY}
+          {proposal.closing_body}
         </p>
 
-        {/* Deadline box */}
         <div className="border-2 border-gold rounded-lg bg-wine/50 p-6 md:p-8 mb-10 inline-block">
           <p className="font-body text-cream text-sm md:text-base mb-3">
-            Para iniciar el {PROPOSAL.START_DATE} necesitamos tu aprobación antes del {PROPOSAL.DEADLINE_DATE}
+            Para iniciar el {proposal.start_date} necesitamos tu aprobación antes del {proposal.deadline_date}
           </p>
           <CountdownTimer />
         </div>
