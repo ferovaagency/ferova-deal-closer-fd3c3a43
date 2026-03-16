@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useProposalContext } from "@/contexts/ProposalContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -148,10 +149,13 @@ REGLAS
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/ai", {
+      const CHAT_URL = `https://evevdlqezaielsyzkzit.supabase.co/functions/v1/fera-chat`;
+
+      const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2ZXZkbHFlemFpZWxzeXpreml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODY3MDAsImV4cCI6MjA4OTE2MjcwMH0.cpV8NpMQ4gltBQlbXs3Ft_0hnUIsITI0d5dPRT4iQcA`,
         },
         body: JSON.stringify({
           messages: updatedMessages.map((m) => ({
@@ -162,18 +166,96 @@ REGLAS
         }),
       });
 
-      if (!response.ok) throw new Error("Error en la respuesta");
+      if (!resp.ok) {
+        const errorData = await resp.json().catch(() => null);
+        throw new Error(errorData?.error || "Error en la respuesta");
+      }
 
-      const data = await response.json();
-      const assistantContent =
-        data.choices?.[0]?.message?.content ||
-        data.content?.[0]?.text ||
-        `Lo siento, hubo un error. Escríbele a ${proposal.agent_name} por WhatsApp.`;
+      if (!resp.body) throw new Error("No stream body");
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: assistantContent },
-      ]);
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = "";
+      let assistantSoFar = "";
+      let streamDone = false;
+
+      // Add empty assistant message
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") {
+            streamDone = true;
+            break;
+          }
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantSoFar += content;
+              const snapshot = assistantSoFar;
+              setMessages((prev) =>
+                prev.map((m, i) =>
+                  i === prev.length - 1 ? { ...m, content: snapshot } : m
+                )
+              );
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Final flush
+      if (textBuffer.trim()) {
+        for (let raw of textBuffer.split("\n")) {
+          if (!raw) continue;
+          if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+          if (raw.startsWith(":") || raw.trim() === "") continue;
+          if (!raw.startsWith("data: ")) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantSoFar += content;
+              const snapshot = assistantSoFar;
+              setMessages((prev) =>
+                prev.map((m, i) =>
+                  i === prev.length - 1 ? { ...m, content: snapshot } : m
+                )
+              );
+            }
+          } catch { /* ignore partial leftovers */ }
+        }
+      }
+
+      // If no content was streamed, show fallback
+      if (!assistantSoFar) {
+        setMessages((prev) =>
+          prev.map((m, i) =>
+            i === prev.length - 1
+              ? { ...m, content: `Lo siento, hubo un error. Escríbele a ${proposal.agent_name} por WhatsApp.` }
+              : m
+          )
+        );
+      }
     } catch {
       setMessages((prev) => [
         ...prev,
