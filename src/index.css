@@ -62,9 +62,15 @@
   line-height: 1.7;
 }
 
-p, li, span {
-  font-size: 1rem;
-  line-height: 1.75;
+p:not(.chat-bubble), li {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+.chat-scrollbar p,
+.chat-scrollbar li,
+.chat-scrollbar span {
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
 }
 
   h1, h2 {

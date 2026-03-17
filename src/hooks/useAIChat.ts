@@ -1,6 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useProposalContext } from "@/contexts/ProposalContext";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -16,6 +15,7 @@ export function useAIChat() {
   const proposal = useProposalContext();
   const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
   const [isLoading, setIsLoading] = useState(false);
+  const messageCountRef = useRef(0);
 
   const SYSTEM_PROMPT = `Eres Fera, la asesora digital de Ferova Agency. 
 Hablas directamente con prospectos que están leyendo una propuesta 
@@ -140,22 +140,67 @@ REGLAS
 5. Sin "¡Excelente pregunta!" ni frases corporativas vacías
 6. Nunca información falsa para cerrar una venta
 7. Casos de éxito específicos: Mafe los comparte por WhatsApp
-8. Nunca hables mal de otras agencias`;
+8. Nunca hables mal de otras agencias
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPORTAMIENTO DE CONVERSIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tu objetivo principal es que el prospecto entienda 
+la propuesta y tome una decisión. Cuando detectes que 
+el prospecto ya entendió los planes y está evaluando, 
+o cuando lleve más de 3 mensajes en la conversación, 
+termina tu respuesta con este bloque exacto en formato 
+especial que la UI puede detectar:
+
+[MOSTRAR_APROBACION]
+
+Esto hará que aparezcan los botones de aprobación 
+por plan en el chat.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TONO Y ESTILO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Respuestas cortas y directas — máximo 4 líneas por respuesta
+- Usa ejemplos concretos del negocio del cliente cuando expliques
+- Si alguien pregunta cómo funciona un algoritmo o canal, 
+  explícalo en términos del negocio del cliente, no en abstracto
+- Nunca suenes condescendiente — el cliente sabe de su negocio, 
+  tú sabes de marketing digital
+- Cuando el cliente dude del precio, explica el valor concreto 
+  que recibe, no justifiques el precio en abstracto
+- Nunca inventes datos, precios o resultados que no estén 
+  en el system prompt o en el contexto del cliente
+- Si no sabes algo, di honestamente que Mafe lo puede 
+  aclarar por WhatsApp
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SOBRE EL SITIO WEB DE FEROVA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Si te preguntan sobre casos de éxito, servicios, precios 
+o más información sobre Ferova Agency, dirígelos a:
+- Casos de éxito: https://seoparaecommerce.co/casos-de-exito
+- Servicios: https://seoparaecommerce.co/servicios  
+- Precios: https://seoparaecommerce.co/precios
+- Blog: https://seoparaecommerce.co/blog`;
 
   const sendMessage = useCallback(async (userMessage: string) => {
     const userMsg: Message = { role: "user", content: userMessage };
     const updatedMessages = [...messages, userMsg];
     setMessages(updatedMessages);
     setIsLoading(true);
+    messageCountRef.current += 1;
 
     try {
-      const CHAT_URL = `https://evevdlqezaielsyzkzit.supabase.co/functions/v1/fera-chat`;
+      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fera-chat`;
 
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2ZXZkbHFlemFpZWxzeXpreml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODY3MDAsImV4cCI6MjA4OTE2MjcwMH0.cpV8NpMQ4gltBQlbXs3Ft_0hnUIsITI0d5dPRT4iQcA`,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({
           messages: updatedMessages.map((m) => ({
