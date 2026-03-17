@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAIChat } from "@/hooks/useAIChat";
+import { useProposalContext } from "@/contexts/ProposalContext";
+import { buildWhatsAppURL } from "@/lib/whatsapp";
 import { X, Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
@@ -8,6 +10,61 @@ const CHIPS = [
   "¿Cuánto tarda en dar resultados?",
   "¿Puedo pagar en cuotas?",
 ];
+
+const APPROVAL_TAG = "[MOSTRAR_APROBACION]";
+
+const PlanApprovalBlock = () => {
+  const proposal = useProposalContext();
+  const plans = proposal.plans as { name: string; price: string }[];
+
+  return (
+    <div
+      className="mt-2 space-y-2"
+      style={{
+        background: "#FAF6F0",
+        border: "1px solid #C0930E",
+        borderRadius: 8,
+        padding: 12,
+      }}
+    >
+      {plans.map((plan) => {
+        const url = buildWhatsAppURL(
+          `Hola ${proposal.agent_name}, apruebo el ${plan.name} de Ferova Agency para ${proposal.client_company}. ¡Iniciemos!`,
+          proposal.whatsapp_number
+        );
+        return (
+          <div key={plan.name} className="flex items-center justify-between gap-2">
+            <div>
+              <div className="font-body" style={{ fontWeight: 600, color: "#2F2D56", fontSize: 13 }}>
+                {plan.name}
+              </div>
+              <div className="font-body" style={{ color: "#C0930E", fontSize: 12 }}>
+                {plan.price}
+              </div>
+            </div>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body whitespace-nowrap shrink-0"
+              style={{
+                background: "#C0930E",
+                color: "#2F2D56",
+                fontSize: 11,
+                padding: "6px 12px",
+                borderRadius: 6,
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              Aprobar este plan →
+            </a>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,13 +77,11 @@ const AIChatWidget = () => {
   const tooltipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tooltipHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Pill entrance after 2.5s
   useEffect(() => {
     const t = setTimeout(() => setPillVisible(true), 2500);
     return () => clearTimeout(t);
   }, []);
 
-  // Proactive tooltip after pill visible 10s
   useEffect(() => {
     if (!pillVisible || isOpen) return;
     tooltipTimer.current = setTimeout(() => {
@@ -60,12 +115,25 @@ const AIChatWidget = () => {
     setShowChips(false);
   };
 
+  const renderMessageContent = (content: string, role: string) => {
+    const hasApproval = role === "assistant" && content.includes(APPROVAL_TAG);
+    const displayContent = hasApproval ? content.replace(APPROVAL_TAG, "").trim() : content;
+
+    return (
+      <>
+        <div className="prose prose-sm max-w-none [&>p]:m-0 [&>p]:leading-relaxed">
+          <ReactMarkdown>{displayContent}</ReactMarkdown>
+        </div>
+        {hasApproval && <PlanApprovalBlock />}
+      </>
+    );
+  };
+
   return (
     <>
       {/* Pill */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-          {/* Tooltip */}
           {showTooltip && (
             <div
               className="mb-2 px-3 py-1.5 rounded-lg text-xs font-body font-medium whitespace-nowrap"
@@ -117,7 +185,7 @@ const AIChatWidget = () => {
       {/* Panel */}
       {isOpen && (
         <div
-          className="fixed z-50 flex flex-col overflow-hidden"
+          className="fixed z-50 flex flex-col overflow-hidden fera-panel"
           style={{
             bottom: 24,
             right: 24,
@@ -233,9 +301,7 @@ const AIChatWidget = () => {
                         }
                   }
                 >
-                  <div className="prose prose-sm max-w-none [&>p]:m-0 [&>p]:leading-relaxed">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
+                  {renderMessageContent(msg.content, msg.role)}
                 </div>
               </div>
             ))}
