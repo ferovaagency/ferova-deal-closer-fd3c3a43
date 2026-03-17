@@ -278,7 +278,7 @@ const AIChatWidget = () => {
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 overflow-y-auto px-4 py-3 space-y-3 chat-scrollbar"
+            className="flex-1 overflow-y-auto px-4 py-3 space-y-3 chat-scrollbar text-sm leading-relaxed"
             style={{ background: "#FAF6F0" }}
           >
             {messages.map((msg, i) => (

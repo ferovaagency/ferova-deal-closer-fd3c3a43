@@ -14,13 +14,17 @@ const ClosingSection = () => {
           {proposal.closing_headline}
         </h2>
 
+        <p className="font-body text-cream/70 text-base md:text-lg italic mb-6 max-w-xl mx-auto">
+          Las marcas que dominan su mercado no esperaron el momento perfecto. Lo crearon.
+        </p>
+
         <p className="font-body text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto">
           {proposal.closing_body}
         </p>
 
         <div className="border-2 border-gold rounded-lg bg-wine/50 p-6 md:p-8 mb-10 inline-block">
           <p className="font-body text-cream text-sm md:text-base mb-3">
-            Para iniciar el {proposal.start_date} necesitamos tu aprobación antes del {proposal.deadline_date}
+            Para iniciar el {proposal.start_date}, aprueba antes del {proposal.deadline_date}. Esta propuesta vence el {proposal.expiry_date}.
           </p>
           <CountdownTimer />
         </div>

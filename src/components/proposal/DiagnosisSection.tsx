@@ -14,9 +14,13 @@ const DiagnosisSection = () => {
   return (
     <section id="diagnostico" className="bg-cream py-20 md:py-28 px-4">
       <div className="container mx-auto max-w-4xl">
-        <h2 className="font-display text-navy text-3xl md:text-5xl mb-12 text-center">
+        <h2 className="font-display text-navy text-3xl md:text-5xl mb-6 text-center">
           Lo que encontramos
         </h2>
+
+        <p className="font-body text-charcoal/70 text-center max-w-2xl mx-auto mb-12">
+          Antes de preparar esta propuesta, analizamos a fondo la situación digital de {proposal.client_company}. Esto es lo que encontramos.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {proposal.diagnosis.map((item, i) => (
