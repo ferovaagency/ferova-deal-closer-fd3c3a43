@@ -56,10 +56,16 @@
   }
 
   body {
-  font-family: 'Outfit', sans-serif;
-  @apply bg-background text-foreground;
-  font-size: 16px;
-  line-height: 1.7;
+    font-family: 'Outfit', sans-serif;
+    @apply bg-background text-foreground;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  h1, h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+  }
 }
 
 p:not(.chat-bubble), li {
@@ -72,12 +78,6 @@ p:not(.chat-bubble), li {
 .chat-scrollbar div {
   font-size: 0.875rem !important;
   line-height: 1.5 !important;
-}
-
-  h1, h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 700;
-  }
 }
 
 /* Smooth scroll */
@@ -90,18 +90,6 @@ html {
   html {
     font-size: 18px;
   }
-}
-
-p:not(.chat-bubble), li {
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
-.chat-scrollbar p,
-.chat-scrollbar li,
-.chat-scrollbar span,
-.chat-scrollbar div {
-  font-size: 0.875rem !important;
-  line-height: 1.5 !important;
 }
 
 /* Scrollbar for chat */

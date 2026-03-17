@@ -10,16 +10,23 @@ const borderColors = [
 
 const DiagnosisSection = () => {
   const proposal = useProposalContext();
+  const s = proposal.sections?.diagnosis;
 
   return (
     <section id="diagnostico" className="bg-cream py-20 md:py-28 px-4">
       <div className="container mx-auto max-w-4xl">
+        {s?.eyebrow && (
+          <p className="font-body text-gold text-sm font-semibold uppercase tracking-wider text-center mb-3">
+            {s.eyebrow}
+          </p>
+        )}
+
         <h2 className="font-display text-navy text-3xl md:text-5xl mb-6 text-center">
-          Lo que encontramos
+          {s?.title || "Lo que encontramos"}
         </h2>
 
         <p className="font-body text-charcoal/70 text-center max-w-2xl mx-auto mb-12">
-          Antes de preparar esta propuesta, analizamos a fondo la situación digital de {proposal.client_company}. Esto es lo que encontramos.
+          {s?.intro || `Antes de preparar esta propuesta, analizamos a fondo la situación digital de ${proposal.client_company}. Esto es lo que encontramos.`}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -38,9 +45,16 @@ const DiagnosisSection = () => {
           ))}
         </div>
 
-        <div className="bg-wine/10 border-l-4 border-l-wine rounded-md p-5 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-wine flex-shrink-0 mt-0.5" />
-          <p className="font-body text-sm text-wine">
+        <div className="bg-wine/10 border-l-4 border-l-wine rounded-md p-5">
+          {s?.alert_title && (
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle className="w-5 h-5 text-wine flex-shrink-0" />
+              <p className="font-body font-semibold text-sm text-wine">
+                {s.alert_title}
+              </p>
+            </div>
+          )}
+          <p className="font-body text-sm text-wine leading-relaxed">
             {proposal.urgency_text}
           </p>
         </div>

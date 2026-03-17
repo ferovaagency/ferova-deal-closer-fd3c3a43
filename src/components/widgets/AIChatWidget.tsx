@@ -7,8 +7,8 @@ import ReactMarkdown from "react-markdown";
 
 const CHIPS = [
   "¿Qué incluye cada plan?",
-  "¿Cuánto tarda en dar resultados?",
-  "¿Puedo pagar en cuotas?",
+  "¿Cuánto tarda el SEO en dar resultados?",
+  "¿Qué es el GEO?",
 ];
 
 const APPROVAL_TAG_1 = "[MOSTRAR_APROBACION]";
@@ -144,7 +144,7 @@ const AIChatWidget = () => {
                 animation: "fade-in 0.3s ease-out",
               }}
             >
-              Puedo explicarte los planes 💡
+              ¿Tienes dudas sobre la propuesta? 💡
             </div>
           )}
           <button
@@ -176,8 +176,8 @@ const AIChatWidget = () => {
               F
             </div>
             <span className="font-body text-sm text-white">
-              <span className="hidden sm:inline">¿Tienes dudas? Soy Fera 👋</span>
-              <span className="sm:hidden">Fera 👋</span>
+              <span className="hidden sm:inline">¿Dudas? Pregúntame 👋</span>
+              <span className="sm:hidden">Asesor 👋</span>
             </span>
           </button>
         </div>
@@ -238,8 +238,8 @@ const AIChatWidget = () => {
               F
             </div>
             <div className="flex-1">
-              <div className="font-body font-bold text-white text-sm">Fera</div>
-              <div className="font-body text-white/60 text-xs">Asesora Ferova</div>
+              <div className="font-body font-bold text-white text-sm">Ferova Assistant</div>
+              <div className="font-body text-white/60 text-xs">Asesor digital</div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -345,7 +345,7 @@ const AIChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Escríbele a Fera..."
+              placeholder="Escribe tu pregunta..."
               className="flex-1 text-sm font-body px-3 py-2 rounded-md border border-border bg-transparent focus:outline-none focus:ring-1 focus:ring-gold"
             />
             <button

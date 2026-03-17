@@ -1,6 +1,46 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
+export interface SectionsContent {
+  hero?: {
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+  };
+  diagnosis?: {
+    eyebrow?: string;
+    title?: string;
+    intro?: string;
+    alert_title?: string;
+  };
+  opportunity?: {
+    eyebrow?: string;
+    title?: string;
+    footnote?: string;
+    quote_author?: string;
+    highlight?: string;
+  };
+  strategy?: {
+    eyebrow?: string;
+    title?: string;
+    intro?: string;
+    steps?: Array<{ num: number; title: string; desc: string; color: string }>;
+    components?: Array<{ name: string; desc: string; tag: string; tagColor: string }>;
+  };
+  plans?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    notes?: string[];
+  };
+  closing?: {
+    eyebrow?: string;
+    extra_quote?: string;
+    deadline_text?: string;
+    button_text?: string;
+  };
+}
+
 export interface ProposalData {
   id: string
   slug: string
@@ -18,12 +58,15 @@ export interface ProposalData {
   opportunity_quote: string
   plans: {
     name: string
+    eyebrow?: string
     price: string
+    priceNote?: string
     adBudget: string
     months: string
     includes: string[]
     excludes: string[]
     isRecommended: boolean
+    buttonText?: string
   }[]
   recommendation_text: string
   closing_headline: string
@@ -35,6 +78,7 @@ export interface ProposalData {
   approved_at: string | null
   created_at: string
   expires_at: string | null
+  sections: SectionsContent | null
 }
 
 export function useProposal(slug: string) {
@@ -54,8 +98,7 @@ export function useProposal(slug: string) {
       if (error) {
         setError(error)
       } else {
-        setProposal(data as ProposalData)
-        // Incrementar vistas
+        setProposal(data as unknown as ProposalData)
         await supabase
           .from('proposals')
           .update({ views_count: (data.views_count || 0) + 1 })

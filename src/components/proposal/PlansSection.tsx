@@ -4,20 +4,30 @@ import { Check, Minus } from "lucide-react";
 
 const PlansSection = () => {
   const proposal = useProposalContext();
+  const s = proposal.sections?.plans;
 
   return (
     <section id="planes">
       <div className="bg-charcoal py-14 px-4">
-        <h2 className="font-display text-cream text-3xl md:text-5xl text-center">
-          Planes diseñados para ti
-        </h2>
+        <div className="container mx-auto max-w-5xl text-center">
+          {s?.eyebrow && (
+            <p className="font-body text-gold text-sm font-semibold uppercase tracking-wider mb-3">
+              {s.eyebrow}
+            </p>
+          )}
+          <h2 className="font-display text-cream text-3xl md:text-5xl">
+            {s?.title || "Planes diseñados para ti"}
+          </h2>
+          {s?.subtitle && (
+            <p className="font-body text-cream/60 text-base max-w-2xl mx-auto mt-4">
+              {s.subtitle}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="bg-cream py-20 md:py-28 px-4">
         <div className="container mx-auto max-w-5xl">
-          <p className="font-body text-charcoal/70 text-center max-w-2xl mx-auto mb-12">
-            Diseñamos tres caminos posibles para {proposal.client_company}. Cada uno tiene un propósito distinto — el del medio es el que recomendamos para este momento.
-          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-12">
             {proposal.plans.map((plan, i) => {
               const msg = `Hola ${proposal.agent_name}, apruebo el ${plan.name} de Ferova Agency para ${proposal.client_company}. ¡Iniciemos!`;
@@ -40,13 +50,21 @@ const PlansSection = () => {
                     </div>
                   )}
 
+                  {plan.eyebrow && (
+                    <p className="font-body text-xs uppercase tracking-wider text-muted-foreground mb-1">
+                      {plan.eyebrow}
+                    </p>
+                  )}
+
                   <h3 className="font-display text-navy text-2xl mb-2">{plan.name}</h3>
                   <div className="mb-1">
                     <span className="font-display text-gold text-4xl">{plan.price}</span>
-                    <span className="font-body text-muted-foreground text-sm">/mes</span>
+                    <span className="font-body text-muted-foreground text-sm">
+                      {plan.priceNote ? ` ${plan.priceNote}` : "/mes"}
+                    </span>
                   </div>
                   <p className="font-body text-muted-foreground text-xs mb-5">
-                    Presupuesto en pauta: {plan.adBudget}/mes
+                    {plan.adBudget}
                   </p>
 
                   <ul className="space-y-2 mb-4">
@@ -83,18 +101,28 @@ const PlansSection = () => {
                         : "border border-navy text-navy hover:bg-navy hover:text-cream"
                     }`}
                   >
-                    Elegir {plan.name} →
+                    {plan.buttonText || `Elegir ${plan.name}`} →
                   </a>
                 </div>
               );
             })}
           </div>
 
-          <div className="bg-navy/10 border-l-4 border-l-navy rounded-md p-6">
+          <div className="bg-navy/10 border-l-4 border-l-navy rounded-md p-6 mb-8">
             <p className="font-body text-sm text-navy leading-relaxed">
               {proposal.recommendation_text}
             </p>
           </div>
+
+          {s?.notes && s.notes.length > 0 && (
+            <div className="space-y-3">
+              {s.notes.map((note, i) => (
+                <p key={i} className={`font-body text-xs leading-relaxed ${i === 1 ? 'text-gold' : 'text-charcoal/60'}`}>
+                  {note}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
