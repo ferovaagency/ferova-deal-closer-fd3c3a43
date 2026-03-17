@@ -188,7 +188,7 @@ const AIChatWidget = () => {
         <div
           className="fixed z-50 flex flex-col overflow-hidden fera-panel"
           style={{
-            bottom: 24,
+            bottom: 90,
             right: 24,
             width: 340,
             height: 480,
