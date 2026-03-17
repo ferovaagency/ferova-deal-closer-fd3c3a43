@@ -34,6 +34,7 @@ export type Database = {
           opportunity_quote: string
           plans: Json
           recommendation_text: string
+          sections: Json | null
           slug: string
           start_date: string
           stats: Json
@@ -61,6 +62,7 @@ export type Database = {
           opportunity_quote?: string
           plans?: Json
           recommendation_text?: string
+          sections?: Json | null
           slug: string
           start_date: string
           stats?: Json
@@ -88,6 +90,7 @@ export type Database = {
           opportunity_quote?: string
           plans?: Json
           recommendation_text?: string
+          sections?: Json | null
           slug?: string
           start_date?: string
           stats?: Json
