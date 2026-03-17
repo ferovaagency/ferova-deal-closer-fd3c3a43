@@ -11,7 +11,8 @@ const CHIPS = [
   "¿Puedo pagar en cuotas?",
 ];
 
-const APPROVAL_TAG = "[MOSTRAR_APROBACION]";
+const APPROVAL_TAG_1 = "[MOSTRAR_APROBACION]";
+const APPROVAL_TAG_2 = "[MOSTRAR_PLANES]";
 
 const PlanApprovalBlock = () => {
   const proposal = useProposalContext();
@@ -116,8 +117,8 @@ const AIChatWidget = () => {
   };
 
   const renderMessageContent = (content: string, role: string) => {
-    const hasApproval = role === "assistant" && content.includes(APPROVAL_TAG);
-    const displayContent = hasApproval ? content.replace(APPROVAL_TAG, "").trim() : content;
+    const hasApproval = role === "assistant" && (content.includes(APPROVAL_TAG_1) || content.includes(APPROVAL_TAG_2));
+    const displayContent = hasApproval ? content.replace(APPROVAL_TAG_1, "").replace(APPROVAL_TAG_2, "").trim() : content;
 
     return (
       <>
@@ -133,7 +134,7 @@ const AIChatWidget = () => {
     <>
       {/* Pill */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div className="fixed z-50 flex flex-col items-end" style={{ bottom: 90, right: 24 }}>
           {showTooltip && (
             <div
               className="mb-2 px-3 py-1.5 rounded-lg text-xs font-body font-medium whitespace-nowrap"
@@ -187,7 +188,7 @@ const AIChatWidget = () => {
         <div
           className="fixed z-50 flex flex-col overflow-hidden fera-panel"
           style={{
-            bottom: 24,
+            bottom: 90,
             right: 24,
             width: 340,
             height: 480,
@@ -277,7 +278,7 @@ const AIChatWidget = () => {
           {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 overflow-y-auto px-4 py-3 space-y-3 chat-scrollbar"
+            className="flex-1 overflow-y-auto px-4 py-3 space-y-3 chat-scrollbar text-sm leading-relaxed"
             style={{ background: "#FAF6F0" }}
           >
             {messages.map((msg, i) => (

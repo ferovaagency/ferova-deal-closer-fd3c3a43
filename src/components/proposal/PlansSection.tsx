@@ -15,6 +15,9 @@ const PlansSection = () => {
 
       <div className="bg-cream py-20 md:py-28 px-4">
         <div className="container mx-auto max-w-5xl">
+          <p className="font-body text-charcoal/70 text-center max-w-2xl mx-auto mb-12">
+            Diseñamos tres caminos posibles para {proposal.client_company}. Cada uno tiene un propósito distinto — el del medio es el que recomendamos para este momento.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-12">
             {proposal.plans.map((plan, i) => {
               const msg = `Hola ${proposal.agent_name}, apruebo el ${plan.name} de Ferova Agency para ${proposal.client_company}. ¡Iniciemos!`;

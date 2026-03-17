@@ -1,4 +1,5 @@
 import { useProposalContext } from "@/contexts/ProposalContext";
+import logoImg from "@/assets/ferova-logo.png";
 
 const HeroSection = () => {
   const proposal = useProposalContext();
@@ -7,9 +8,11 @@ const HeroSection = () => {
     <section className="min-h-screen bg-navy flex flex-col py-0 px-0">
       {/* Top bar */}
       <div className="relative flex items-center justify-between px-8 py-5">
-        <a href="#" className="font-display text-cream text-xl tracking-wide">
-          Ferova <span className="text-gold text-base font-body font-light">/ AGENCY</span>
-        </a>
+        <img
+          src={logoImg}
+          alt="Ferova Agency"
+          className="h-10 w-auto brightness-0 invert"
+        />
         <a
           href="#aprobar"
           className="font-body font-semibold text-sm rounded-lg transition-all duration-300 hover:shadow-card-hover"
@@ -29,24 +32,27 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/10 mb-10 animate-soft-pulse">
             <span className="w-2 h-2 rounded-full bg-gold" />
             <span className="text-gold font-body text-sm">
-              Cupo disponible · Inicio: {proposal.start_date}
+              ● Propuesta activa · Cierre: {proposal.deadline_date}
             </span>
           </div>
 
-          <h1 className="font-display text-cream text-[40px] md:text-[64px] leading-tight mb-6">
-            Propuesta digital para
-            <br />
-            <span className="text-gold">{proposal.client_company}</span>
+          <h1 className="mb-6">
+            <span className="font-body font-medium text-cream/60 text-xl block mb-2">
+              Propuesta digital para
+            </span>
+            <span className="font-display font-bold text-gold text-[56px] md:text-[80px] leading-tight block">
+              {proposal.client_company}
+            </span>
           </h1>
 
-          <p className="font-body text-cream/80 text-lg md:text-xl mb-8">
-            Preparada exclusivamente para {proposal.client_name}
+          <p className="font-body text-base text-cream/50 mb-8">
+            Atención: {proposal.client_name}
           </p>
 
           <div className="w-16 h-0.5 bg-gold mx-auto mb-8" />
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-cream/60 font-body text-sm">
-            <span>Cliente: {proposal.client_name}</span>
+            <span>Empresa: {proposal.client_company}</span>
             <span>Válida hasta: {proposal.expiry_date}</span>
           </div>
         </div>

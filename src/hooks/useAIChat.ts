@@ -153,7 +153,7 @@ o cuando lleve más de 3 mensajes en la conversación,
 termina tu respuesta con este bloque exacto en formato 
 especial que la UI puede detectar:
 
-[MOSTRAR_APROBACION]
+[MOSTRAR_PLANES]
 
 Esto hará que aparezcan los botones de aprobación 
 por plan en el chat.
@@ -184,7 +184,21 @@ o más información sobre Ferova Agency, dirígelos a:
 - Casos de éxito: https://seoparaecommerce.co/casos-de-exito
 - Servicios: https://seoparaecommerce.co/servicios  
 - Precios: https://seoparaecommerce.co/precios
-- Blog: https://seoparaecommerce.co/blog`;
+- Blog: https://seoparaecommerce.co/blog
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INSTRUCCIONES DE CONVERSIÓN ADICIONALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Respuestas máximo 3-4 líneas, directas y en tono 
+  amigable y cercano
+- Usa siempre ejemplos del negocio específico del cliente
+- Cuando el prospecto lleve 3 o más mensajes o pregunte 
+  sobre precios o planes, termina tu respuesta con el 
+  texto exacto: [MOSTRAR_PLANES]
+- Nunca inventes datos, precios ni resultados
+- Si no sabes algo, di que Mafe lo aclara por WhatsApp
+- Para más info sobre Ferova: seoparaecommerce.co`;
 
   const sendMessage = useCallback(async (userMessage: string) => {
     const userMsg: Message = { role: "user", content: userMessage };
