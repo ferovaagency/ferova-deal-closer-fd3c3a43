@@ -24,7 +24,7 @@ const ClosingSection = () => {
 
         <div className="border-2 border-gold rounded-lg bg-wine/50 p-6 md:p-8 mb-10 inline-block">
           <p className="font-body text-cream text-sm md:text-base mb-3">
-            Para iniciar el {proposal.start_date}, aprueba antes del {proposal.deadline_date}. Esta propuesta vence el {proposal.expiry_date}.
+            Aprueba antes del {proposal.deadline_date} y arrancamos el {proposal.start_date}. Esta propuesta vence el {proposal.expiry_date}.
           </p>
           <CountdownTimer />
         </div>
