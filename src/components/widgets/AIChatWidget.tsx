@@ -134,7 +134,7 @@ const AIChatWidget = () => {
     <>
       {/* Pill */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div className="fixed z-50 flex flex-col items-end" style={{ bottom: 90, right: 24 }}>
           {showTooltip && (
             <div
               className="mb-2 px-3 py-1.5 rounded-lg text-xs font-body font-medium whitespace-nowrap"
