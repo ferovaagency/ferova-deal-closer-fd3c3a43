@@ -11,7 +11,8 @@ const CHIPS = [
   "¿Puedo pagar en cuotas?",
 ];
 
-const APPROVAL_TAG = "[MOSTRAR_APROBACION]";
+const APPROVAL_TAG_1 = "[MOSTRAR_APROBACION]";
+const APPROVAL_TAG_2 = "[MOSTRAR_PLANES]";
 
 const PlanApprovalBlock = () => {
   const proposal = useProposalContext();
