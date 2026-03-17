@@ -40,7 +40,7 @@ const HeroSection = () => {
             <span className="font-body font-medium text-cream/60 text-xl block mb-2">
               Propuesta digital para
             </span>
-            <span className="font-display font-bold text-gold text-[56px] md:text-[80px] leading-tight block">
+            <span className="font-display font-bold text-gold text-[64px] md:text-[88px] leading-tight block">
               {proposal.client_company}
             </span>
           </h1>
