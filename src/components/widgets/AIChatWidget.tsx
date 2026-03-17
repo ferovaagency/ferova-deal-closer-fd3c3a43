@@ -117,8 +117,8 @@ const AIChatWidget = () => {
   };
 
   const renderMessageContent = (content: string, role: string) => {
-    const hasApproval = role === "assistant" && content.includes(APPROVAL_TAG);
-    const displayContent = hasApproval ? content.replace(APPROVAL_TAG, "").trim() : content;
+    const hasApproval = role === "assistant" && (content.includes(APPROVAL_TAG_1) || content.includes(APPROVAL_TAG_2));
+    const displayContent = hasApproval ? content.replace(APPROVAL_TAG_1, "").replace(APPROVAL_TAG_2, "").trim() : content;
 
     return (
       <>
