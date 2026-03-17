@@ -3,6 +3,7 @@ import logoImg from "@/assets/ferova-logo.png";
 
 const HeroSection = () => {
   const proposal = useProposalContext();
+  const s = proposal.sections?.hero;
 
   return (
     <section className="min-h-screen bg-navy flex flex-col py-0 px-0">
@@ -32,18 +33,31 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/10 mb-10 animate-soft-pulse">
             <span className="w-2 h-2 rounded-full bg-gold" />
             <span className="text-gold font-body text-sm">
-              ● Propuesta activa · Cierre: {proposal.deadline_date}
+              {s?.badge || `● Propuesta activa · Cierre: ${proposal.deadline_date}`}
             </span>
           </div>
 
-          <h1 className="mb-6">
-            <span className="font-body font-medium text-cream/60 text-xl block mb-2">
-              Propuesta digital para
-            </span>
-            <span className="font-display font-bold text-gold text-[64px] md:text-[88px] leading-tight block">
-              {proposal.client_company}
-            </span>
-          </h1>
+          {s?.title ? (
+            <>
+              <h1 className="font-display font-bold text-gold text-[48px] md:text-[72px] leading-tight mb-4">
+                {s.title}
+              </h1>
+              {s.subtitle && (
+                <p className="font-body text-cream/70 text-base md:text-lg max-w-2xl mx-auto mb-6">
+                  {s.subtitle}
+                </p>
+              )}
+            </>
+          ) : (
+            <h1 className="mb-6">
+              <span className="font-body font-medium text-cream/60 text-xl block mb-2">
+                Propuesta digital para
+              </span>
+              <span className="font-display font-bold text-gold text-[64px] md:text-[88px] leading-tight block">
+                {proposal.client_company}
+              </span>
+            </h1>
+          )}
 
           <p className="font-body text-base text-cream/50 mb-8">
             Atención: {proposal.client_name}
